@@ -2,16 +2,28 @@ const { Router } = require('express');
 const router = Router();
 
 const nodemailer = require('nodemailer');
-
-router.post('/send-email', async (req, res) => {
-    const { planta, email, email2 } = req.body;
+const lab = 'jorgeivan@unicauca.edu.co'
+router.post('/anomaly', async (req, res) => {
+    const { students, report, date, practice, subject } = req.body;
     console.log("Datos de form",req.body);
     contentHTML = `
         <h1>Servicio de notificaciones - LabRemotos</h1>
         <ul>
-            <li>Planta que está fallando: ${planta}</li>
-            <li>Laboratorista: ${email}</li>
-            <li>Profesor de turno: ${email2}</li>
+            <li>
+            Fecha de reporte: ${date}
+            </li>
+            <li>
+            Grupo de trabajo: ${students}
+            </li>
+            <li>
+            Detalles del reportee: ${report}
+            </li>
+            <li>
+            Práctica: ${practice}
+            </li>
+            <li>
+            Materia: ${subject}
+            </li>
         </ul>
     `;
 
@@ -29,9 +41,8 @@ router.post('/send-email', async (req, res) => {
     })
     let info = await transporter.sendMail({
         from: '"NotificacionesLab" <jorgeivan@unicauca.edu.co>', // sender address,
-        to: email + "," + email2,
-        subject: 'Falla de Planta en Laboratorio Remoto',
-        // text: 'Hello World'
+        to: lab,
+        subject: 'Reporte de anomalía - Laboratorios remotos',
         html: contentHTML
     })
     res.redirect('/success.html');
